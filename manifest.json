@@ -1,5 +1,5 @@
   {
-    "name": "Gitlab Swagger Previewer",
+    "name": "Swagger JSON Previewer",
     "version": "1.0",
     "description": "Preview swagger json in browser",
     "permissions": ["activeTab", "declarativeContent", "storage"],

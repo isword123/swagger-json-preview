@@ -15,6 +15,14 @@ GetJSON(jsonHref).then((body) => {
 
     // hide blob-viewer
     let blobViewer = document.querySelector('.blob-viewer')
-    blobViewer.style.display = 'none'
-    viewSwaggerJSON(body)
+    if (blobViewer) {
+        blobViewer.style.display = 'none'
+    }
+
+    let fileContainer = document.querySelector('.file-holder')
+    if (fileContainer) {
+        viewSwaggerJSON(body, fileContainer)
+    } else {
+        console.log("Pass preview since no file-holder not found")
+    }
 })
