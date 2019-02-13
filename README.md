@@ -1,4 +1,4 @@
-## gitlab-swagger-preview (For Chrome)
+## swagger-json-preview (For Chrome)
 
 > preview swagger json when browse the file in browser
 
