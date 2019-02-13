@@ -32,20 +32,22 @@ Vue.component('swagger-path-method', {
     props: ['path', 'def', 'method'],
     template: '<div>\
         <h3>{{ def.operationId }}</h3>\
-        <p>{{ def.summary }}</p>\
-        <br />\
+        <blockquote>\
+          <p>{{ def.summary }}</p>\
+        </blockquote>\
         <div>\
-            <span>{{ method }}</span> \
+            <h4 style="text-transform: uppercase;">{{ method }}</h4> \
             <pre>{{ path }}</pre> \
         </div>\
-        <h4>Parameters<h4>\
+        <h4>Parameters</h4>\
         <swagger-params-table v-bind:parameters="def.parameters"></swagger-params-table> \
+        <h4>Responses</h4>\
     </div>'
 })
 
 Vue.component('swagger-params-table', {
     props: [ 'parameters' ],
-    template: '<table className="params-table"> \
+    template: '<table class="params-table"> \
     <thead>\
         <tr>\
         <th>Name</th>\
@@ -104,11 +106,13 @@ function viewSwaggerJSON(jsonBody, parent) {
             definitions: jsonBody.definitions
         },
         template: ' \
-        <div> \
+        <div class="file-content wiki"> \
         <swagger-project v-bind:info="info"></swagger-project> \
+                <br />\
         <ul>\
             <li v-for="(definitions, path) in paths" v-bind:key="path">\
                 <swagger-path v-bind:path="path" v-bind:definitions="definitions"></swagger-path>\
+                <br />\
             </li>\
         </ul>\
         </div> \
