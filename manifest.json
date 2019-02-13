@@ -1,0 +1,22 @@
+  {
+    "name": "Gitlab Swagger Previewer",
+    "version": "1.0",
+    "description": "Preview swagger json in browser",
+    "permissions": ["activeTab", "declarativeContent", "storage"],
+    "background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+    "page_action": {
+      "default_popup": "popup.html"
+    },
+    "options_page": "options.html",
+    "content_scripts": [
+      {
+        "matches": ["http://git.vpgame.cn/*.swagger.json"],
+        "css": ["swagger_preview.css"],
+        "js": ["swagger_preview.js"]
+      }
+    ],
+    "manifest_version": 2
+  }
