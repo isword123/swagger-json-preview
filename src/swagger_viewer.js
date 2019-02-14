@@ -159,6 +159,25 @@ Vue.component('swagger-path-method', {
     </div>'
 })
 
+Vue.component('swagger-param-row', {
+    props: ['param'],
+    mounted: function() {
+        if (!this.param.schema) {
+            return
+        }
+        let json = buildResponseJSON(this.param.schema)
+        this.$refs.example.appendChild(renderjson(json))
+    },
+    template: '<tr>\
+        <td>{{ param.name }}</td>\
+        <td v-if="!!param.format">{{ param.type }} (Format: {{param.format}})</td>\
+        <td v-if="!param.format">{{ param.type }}</td>\
+        <td>{{ param.in }}</td>\
+        <td>{{ param.required }}</td>\
+        <td ref="example"></td>\
+    </tr>'
+})
+
 Vue.component('swagger-params-table', {
     props: [ 'parameters' ],
     template: '<table class="params-table"> \
@@ -168,15 +187,12 @@ Vue.component('swagger-params-table', {
         <th>Type</th>\
         <th>Param In</th>\
         <th>Required</th>\
+        <th>Example</th>\
         </tr>\
     </thead>\
     <tbody>\
-        <tr v-for="param in parameters" v-bind:key="param.name+param.in">\
-            <td>{{ param.name }}</td>\
-            <td>{{ param.type }} (Format: {{param.format}})</td>\
-            <td>{{ param.in }}</td>\
-            <td>{{ param.required }}</td>\
-        </tr>\
+        <swagger-param-row v-for="param in parameters" v-bind:key="param.name+param.in" v-bind:param="param">\
+        </swagger-param-row>\
     </tbody>\
     </table>'
 })
