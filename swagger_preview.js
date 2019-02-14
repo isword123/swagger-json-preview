@@ -85,3 +85,9 @@ function previewJSON() {
 }
 
 prepareButton()
+
+chrome.storage.sync.get('auto_preview', function(data) {
+    if (data.auto_preview == 'true') {
+        doPreview()
+    }
+});

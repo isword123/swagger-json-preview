@@ -6,18 +6,26 @@
  * ============================================================
  */
 
-let page = document.getElementById('buttonDiv');
-const kButtonColors = ['#3aa757', '#e8453c', '#f9bb2d', '#4688f1'];
-function constructOptions(kButtonColors) {
-  for (let item of kButtonColors) {
-    let button = document.createElement('button');
-    button.style.backgroundColor = item;
-    button.addEventListener('click', function() {
-      chrome.storage.sync.set({color: item}, function() {
-        console.log('color is ' + item);
-      })
+let checkbox = document.querySelector('#auto_preview')
+let tip = document.querySelector('#auto_preview_text')
+function loadOptions() {
+    chrome.storage.sync.get('auto_preview', function(data) {
+      checkbox.checked = data.auto_preview == 'true'
+      tip.textContent = checkbox.checked ? 'On' : 'Off'
     });
-    page.appendChild(button);
-  }
 }
-constructOptions(kButtonColors);
+
+function prepareEvents() {
+    checkbox.onchange = function(event) {
+      let checked = checkbox.checked
+      let checkVal = checked ? 'true': 'false'
+      chrome.storage.sync.set({auto_preview: checkVal}, function() {
+        console.log('auto_preview is set', checkVal);
+      })
+
+      tip.textContent = checked ? 'On' : 'Off'
+    }
+}
+
+loadOptions()
+prepareEvents()
