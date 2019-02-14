@@ -15,7 +15,7 @@
       {
         "matches": ["http://git.vpgame.cn/*.swagger.json"],
         "css": ["swagger_preview.css"],
-        "js": ["libs/vue.js", "src/req.js", "src/swagger_viewer.js", "swagger_preview.js"]
+        "js": ["libs/vue.js", "libs/renderjson.js", "src/req.js", "src/swagger_viewer.js", "swagger_preview.js"]
       }
     ],
     "manifest_version": 2

@@ -30,6 +30,7 @@
 
 // define global param
 let Definitions = {}
+renderjson.set_show_to_level(4)
 
 function buildResponseJSON(schema) {
     let refId = schema["$ref"]
@@ -117,16 +118,21 @@ function buildKeyContent(prop) {
 Vue.component('swagger-path-response', {
     props: ['code', 'response'],
     data: function() {
+        /*
         let json = buildResponseJSON(this.response.schema)
         let jsonStr = JSON.stringify(json, 4, 4)
+        */
         return {
-            json: jsonStr
+            json: ''
         }
+    },
+    mounted: function() {
+        let json = buildResponseJSON(this.response.schema)
+        this.$refs.codeContainer.appendChild(renderjson(json))  
     },
     template: '<div>\
       <h4>Status: {{ code }} {{ response.description }}</h4>\
-      <pre class="code js-syntax-highlight monokai">\
-    <code>{{ json }}</code>\
+      <div ref="codeContainer"></div>\
       </pre>\
     </div>'
 })
