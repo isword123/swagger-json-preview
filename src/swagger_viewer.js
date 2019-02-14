@@ -53,6 +53,8 @@ function buildJSONByRef(refId) {
         case 'array':
             obj = buildJSONArray(refDef)
             break
+        default:
+            obj = buildKeyContent(refDef)
     }
 
     return obj
@@ -65,6 +67,8 @@ function buildJSONArray(refDef) {
     } else {
         arr.push(buildKeyContent(refDef));
     }
+
+    return arr
 }
 
 function buildJSONObject(refDef) {
