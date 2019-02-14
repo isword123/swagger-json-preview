@@ -216,10 +216,6 @@ Vue.component('swagger-project',  {
 }) 
 
 function viewSwaggerJSON(jsonBody, parent) {
-    let oldContainer = document.querySelector('#swagger-json-container')
-    if (oldContainer) {
-        oldContainer.remove()
-    }
 
     Definitions = jsonBody.definitions || {}
 
