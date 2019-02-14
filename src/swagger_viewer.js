@@ -28,6 +28,109 @@
 }
 */
 
+// define global param
+let Definitions = {}
+
+function buildResponseJSON(schema) {
+    let refId = schema["$ref"]
+    let obj = buildJSONByRef(refId)
+    return obj
+}
+
+function buildJSONByRef(refId) {
+    let refKey = refId.replace('#/definitions/', '')
+    if (!Definitions[refKey]) {
+        return undefined
+    }
+
+    let refDef = Definitions[refKey]
+    let obj;
+    switch(refDef.type) {
+        case 'object':
+            obj = buildJSONObject(refDef)
+            break
+        case 'array':
+            obj = buildJSONArray(refDef)
+            break
+    }
+
+    return obj
+}
+
+function buildJSONArray(refDef) {
+    let arr = [];
+    if (refDef.items['$ref']) {
+       arr.push(buildJSONByRef(refDef.items['$ref'])) 
+    } else {
+        arr.push(buildKeyContent(refDef));
+    }
+}
+
+function buildJSONObject(refDef) {
+    let obj = {}
+    Object.keys(refDef.properties).forEach((key) => {
+        let prop = refDef.properties[key]
+        if (prop['$ref']) {
+            obj[key] = buildJSONByRef(prop['$ref'])
+            return
+        }
+
+        if (prop.type === 'array' && prop.items['$ref']) {
+            obj[key] = [buildJSONByRef(prop.items['$ref'])] 
+            return
+        }
+
+        obj[key] = buildKeyContent(prop)
+    })
+
+    return obj
+}
+
+function buildKeyContent(prop) {
+    let descArr = []
+    descArr.push('Type:', prop.type, prop.format ? '(Format:'+ prop.format+ ')' : '')
+
+    if (prop.type === 'array') {
+        descArr.push('Items Type:', prop.items.type, prop.items.format ?  '(Format:'+ prop.items.format+ ')' : '')
+    }
+
+    if (prop.title) {
+        descArr.push('Title:', prop.title)
+    }
+
+    if (prop.description) {
+        descArr.push('Desc:', prop.description)
+    }
+
+    if (prop.default) {
+        descArr.push('Default:', prop.default)
+    }
+
+    if (prop.enum) {
+        descArr.push('Enum:', prop.enum.join(', '))
+    }
+
+    return descArr.join(' ')
+}
+
+
+Vue.component('swagger-path-response', {
+    props: ['code', 'response'],
+    data: function() {
+        let json = buildResponseJSON(this.response.schema)
+        let jsonStr = JSON.stringify(json, 4, 4)
+        return {
+            json: jsonStr
+        }
+    },
+    template: '<div>\
+      <h4>Status: {{ code }} {{ response.description }}</h4>\
+      <pre class="code js-syntax-highlight monokai">\
+    <code>{{ json }}</code>\
+      </pre>\
+    </div>'
+})
+
 Vue.component('swagger-path-method', {
     props: ['path', 'def', 'method'],
     template: '<div>\
@@ -42,6 +145,7 @@ Vue.component('swagger-path-method', {
         <h4>Parameters</h4>\
         <swagger-params-table v-bind:parameters="def.parameters"></swagger-params-table> \
         <h4>Responses</h4>\
+        <swagger-path-response v-for="(response, code) in def.responses" v-bind:code="code" v-bind:response="response" v-bind:key="code"></swagger-path-response> \
     </div>'
 })
 
@@ -62,7 +166,7 @@ Vue.component('swagger-params-table', {
             <td>{{ param.type }} (Format: {{param.format}})</td>\
             <td>{{ param.in }}</td>\
             <td>{{ param.required }}</td>\
-        <tr>\
+        </tr>\
     </tbody>\
     </table>'
 })
@@ -86,12 +190,12 @@ Vue.component('swagger-project',  {
 }) 
 
 function viewSwaggerJSON(jsonBody, parent) {
-    console.log("to display swagger HTML")
-
     let oldContainer = document.querySelector('#swagger-json-container')
     if (oldContainer) {
         oldContainer.remove()
     }
+
+    Definitions = jsonBody.definitions || {}
 
     let swaggerContainer = document.createElement('div')
     swaggerContainer.id = 'swagger-json-container'
@@ -108,7 +212,7 @@ function viewSwaggerJSON(jsonBody, parent) {
         template: ' \
         <div class="file-content wiki"> \
         <swagger-project v-bind:info="info"></swagger-project> \
-                <br />\
+        <br />\
         <ul>\
             <li v-for="(definitions, path) in paths" v-bind:key="path">\
                 <swagger-path v-bind:path="path" v-bind:definitions="definitions"></swagger-path>\
