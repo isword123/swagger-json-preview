@@ -8,12 +8,17 @@
       "persistent": false
     },
     "page_action": {
-      "default_popup": "popup.html"
+      "default_icon": {
+        "16": "images/preview.png",
+        "32": "images/preview.png",
+        "48": "images/preview.png",
+        "128": "images/preview.png"
+      }
     },
     "options_page": "options.html",
     "content_scripts": [
       {
-        "matches": ["http://git.vpgame.cn/*.swagger.json"],
+        "matches": ["http://*/*.swagger.json", "https://*/*.swagger.json"],
         "css": ["swagger_preview.css"],
         "js": ["libs/vue.min.js", "libs/renderjson.js", "src/req.js", "src/swagger_viewer.js", "swagger_preview.js"]
       }

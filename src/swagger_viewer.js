@@ -220,7 +220,6 @@ function viewSwaggerJSON(jsonBody, parent) {
     Definitions = jsonBody.definitions || {}
 
     let swaggerContainer = document.createElement('div')
-    swaggerContainer.id = 'swagger-json-container'
 
     parent.append(swaggerContainer)
 
@@ -232,7 +231,7 @@ function viewSwaggerJSON(jsonBody, parent) {
             definitions: jsonBody.definitions
         },
         template: ' \
-        <div class="file-content wiki"> \
+        <div class="file-content wiki" id="swagger-json-container"> \
         <swagger-project v-bind:info="info"></swagger-project> \
         <br />\
         <ul>\
