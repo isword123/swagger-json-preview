@@ -1,15 +1,16 @@
 ## swagger-json-preview (For Chrome)
 
-> preview swagger json when browse the file in browser
+> preview swagger json when browse on web
 
 ## feature
-- Only available for gitlab 
+- Only available for gitlab for now
 - The extention will work on web pages where the url is ended with `.swagger.json`
     - An 'Preview Swagger' Button will be shown on file actions row, click the button and the content will be replaced with formatted docs
 
 ## refer
 - https://developer.chrome.com/extensions/getstarted
 - https://github.com/caldwell/renderjson
+- https://www.cnblogs.com/liuxianan/p/chrome-plugin-develop.html
 
 ## how to use
 - Download zip file: https://github.com/isword123/swagger-json-preview/archive/master.zip
