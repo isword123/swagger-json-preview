@@ -174,6 +174,7 @@ Vue.component('swagger-param-row', {
         <td v-if="!param.format">{{ param.type }}</td>\
         <td>{{ param.in }}</td>\
         <td>{{ param.required }}</td>\
+        <td>{{ param.description }}</td>\
         <td ref="example"></td>\
     </tr>'
 })
@@ -187,6 +188,7 @@ Vue.component('swagger-params-table', {
         <th>Type</th>\
         <th>Param In</th>\
         <th>Required</th>\
+        <th>Desc</th>\
         <th>Example</th>\
         </tr>\
     </thead>\
