@@ -63,7 +63,7 @@ function buildJSONByRef(refId) {
 function buildJSONArray(refDef) {
     let arr = [];
     if (refDef.items['$ref']) {
-       arr.push(buildJSONByRef(refDef.items['$ref'])) 
+       arr.push(buildJSONByRef(refDef.items['$ref']))
     } else {
         arr.push(buildKeyContent(refDef));
     }
@@ -81,7 +81,7 @@ function buildJSONObject(refDef) {
         }
 
         if (prop.type === 'array' && prop.items['$ref']) {
-            obj[key] = [buildJSONByRef(prop.items['$ref'])] 
+            obj[key] = [buildJSONByRef(prop.items['$ref'])]
             return
         }
 
@@ -97,6 +97,10 @@ function buildKeyContent(prop) {
 
     if (prop.type === 'array') {
         descArr.push('Items Type:', prop.items.type, prop.items.format ?  '(Format:'+ prop.items.format+ ')' : '')
+    }
+
+    if (prop.type === 'object' && prop.additionalProperties) {
+        descArr.push("Key type: string, Value type: " + prop.additionalProperties.format)
     }
 
     if (prop.title) {
@@ -132,7 +136,7 @@ Vue.component('swagger-path-response', {
     },
     mounted: function() {
         let json = buildResponseJSON(this.response.schema)
-        this.$refs.codeContainer.appendChild(renderjson(json))  
+        this.$refs.codeContainer.appendChild(renderjson(json))
     },
     template: '<div>\
       <h4>Status: {{ code }} {{ response.description }}</h4>\
@@ -215,7 +219,7 @@ Vue.component('swagger-project',  {
         <div>Version: {{info.version}}</div> \
     </div>\
     '
-}) 
+})
 
 function viewSwaggerJSON(jsonBody, parent) {
 
