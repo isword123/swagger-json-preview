@@ -10,3 +10,5 @@
 .renderjson .keyword       { color: rgb(42, 163, 58); }
 .renderjson .object.syntax { color: lightseagreen; }
 .renderjson .array.syntax  { color: lightsalmon; }
+
+#swagger-json-container .renderjson .string { white-space: normal }
