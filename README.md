@@ -22,7 +22,7 @@
 - If you want the preview work automatically, please go to extention options page, and toggle on the 'auto preview' switch
 
 ## TODO
-- 增加 properties 有以下字段的处理 
+- [x] 增加 properties 有以下字段的处理 
 ```
    additionalProperties: {
      type: number,
