@@ -73,6 +73,10 @@ function buildJSONArray(refDef) {
 
 function buildJSONObject(refDef) {
     let obj = {}
+    if (!refDef.properties) {
+        return obj
+    }
+
     Object.keys(refDef.properties).forEach((key) => {
         let prop = refDef.properties[key]
         if (prop['$ref']) {
