@@ -38,7 +38,7 @@ function buildResponseJSON(schema) {
     return obj
 }
 
-function buildJSONByRef(refId) {
+function buildJSONByRef(refId, title) {
     let refKey = refId.replace('#/definitions/', '')
     if (!Definitions[refKey]) {
         return undefined
@@ -48,7 +48,7 @@ function buildJSONByRef(refId) {
     let obj;
     switch(refDef.type) {
         case 'object':
-            obj = buildJSONObject(refDef)
+            obj = buildJSONObject(refDef, title)
             break
         case 'array':
             obj = buildJSONArray(refDef)
@@ -71,16 +71,20 @@ function buildJSONArray(refDef) {
     return arr
 }
 
-function buildJSONObject(refDef) {
+function buildJSONObject(refDef, title) {
     let obj = {}
     if (!refDef.properties) {
         return obj
     }
 
+    if (title) {
+        obj["__comment__"] = title
+    }
+
     Object.keys(refDef.properties).forEach((key) => {
         let prop = refDef.properties[key]
         if (prop['$ref']) {
-            obj[key] = buildJSONByRef(prop['$ref'])
+            obj[key] = buildJSONByRef(prop['$ref'], prop['title'])
             return
         }
 
